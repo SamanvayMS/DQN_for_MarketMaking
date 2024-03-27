@@ -32,13 +32,13 @@ Deep Q-Networks (DQN) represent a landmark convergence of reinforcement learning
 
 ![DQN simple](images/DQN_basic.jpg)
 
-## Architecture and Principle
+#### Architecture and Principle
 
 At the heart of a DQN is the Q-learning algorithm, which aims to learn the value of an action in a given state, encapsulating this knowledge in a Q-function. Traditionally, Q-learning struggled with high-dimensional state spaces due to the curse of dimensionality. DQNs mitigate this by employing a deep neural network as a function approximator for the Q-function, hence the name Deep Q-Network.
 
 The DQN architecture involves an input layer that receives the state representation (e.g., raw pixel data from a video game), several hidden layers that extract features and learn representations of the state, and an output layer that provides the predicted Q-values for each action available in the state. The brilliance of DQN lies in its ability to process complex, high-dimensional inputs and learn to make decisions based solely on these inputs.
 
-## Training and Optimization
+#### Training and Optimization
 
 Training a DQN involves adjusting the weights of the neural network to minimize the difference between the predicted Q-values and the target Q-values, which are computed based on the Bellman equation. This is achieved through a loss function, typically the mean squared error between the predicted and target Q-values.
 
@@ -48,11 +48,11 @@ Another crucial technique is fixed Q-targets. In traditional Q-learning, the tar
 
 ![DQN advanced](images/DQNtarget_eval.png)
 
-## Impact and Applications
+#### Impact and Applications
 
 DQNs have significantly impacted the field of AI, demonstrating the potential of combining RL with deep learning to solve complex decision-making tasks that were previously intractable. Beyond video games, DQNs have found applications in domains such as robotics, for tasks like manipulation and navigation, and in financial trading, where they can be used to make sequence-based decisions under uncertainty.
 
-## Challenges and Future Directions
+#### Challenges and Future Directions
 
 Despite their success, DQNs face challenges such as overestimation of Q-values, sensitivity to hyperparameters, and the requirement for large amounts of training data. Ongoing research is addressing these issues, exploring variations like Double DQNs, Dueling DQNs, and incorporating other RL techniques to enhance performance and stability.
 
