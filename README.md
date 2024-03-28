@@ -93,6 +93,14 @@ State Features :-
 * **Sell Order Intensity** :-
   * number of incoming sell orders in the past interval.
 
+* **Relative Strength Index** :- 
+  * Captures relative strength of the market to identify overbought and oversold regions. 
+  * Using 1 sec bars calculated using midprice.
+
+* **Relative Strength Index(Higher Time Frame)** :-
+  * Captures relative strength of the market but at a relatively higher time frame hence acting like a trend indicator
+  * Using 1 minute bars calculated using midprice.
+
 * **Orderbook Image** :- 
   * +/- 2 dollars of the limit orderbook above and below the midprice.
   * width of the image is the window length and the values are the log(volumes) at various prices standardised between -1 to 1.
@@ -128,8 +136,7 @@ The reward function would be the temporal difference in profits as recorded by t
 
 #### 5. Neural Network Architecture
 
-The DQN architecture comprises a preliminary CNN model that takes in the Orderbook image and then the flattened output is concattenated with the other inputs and passed into later fully connected layers. 
-
+The DQN architecture comprises a preliminary CNN model that takes in the Orderbook image and then the flattened output is concattenated with the other inputs and passed into later fully connected layers.
 
 ### Backtesting with Strategy Studio
 
