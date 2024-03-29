@@ -26,6 +26,7 @@ while true; do
     else
         last_cra_file=$(grep '\.cra' "$log_file" | tail -n1 | awk '{print $NF}')
         echo "Strategy finished"
+        break
     fi
 done
 
