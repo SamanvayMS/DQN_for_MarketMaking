@@ -15,19 +15,18 @@ INCLUDEPATH=../../../../includes
 INCLUDES=-I/usr/include -I$(INCLUDEPATH)
 LDFLAGS=$(LIBPATH)/libstrategystudio_analytics.a $(LIBPATH)/libstrategystudio.a $(LIBPATH)/libstrategystudio_transport.a $(LIBPATH)/libstrategystudio_marketmodels.a $(LIBPATH)/libstrategystudio_utilities.a $(LIBPATH)/libstrategystudio_flashprotocol.a
 
-INSTANCE_NAME=RegressionMeanReversion# single word, no special characters
-STRATEGY_NAME=RegressionMeanReversion# should be your cpp file name, single word, no special characters
+INSTANCE_NAME=DQNStrategytest# single word, no special characters
+STRATEGY_NAME=DQNStrategy# should be your cpp file name, single word, no special characters
 START_DATE=2023-11-30# start of the earliest date
 END_DATE=2023-11-30 # end of the latest date
 SYMBOLS=XNAS.ITCH-AAPL
-PARAMETERS=absolute_stop=0.2|strategy_active=true|debug_=false|max_inventory=100|window_size=30|previous_prediction=0|inventory_liquidation_increment=10|inventory_liquidation_interval=10|bar_interval=1
+PARAMETERS=name=DQNStrategy|working=working
 ACCOUNTSIZE=1000000
-BACKTESTID=01
 
 # Define the names of the library, source, and header files.
-LIBRARY=RegressionMeanReversion.so
-SOURCES=RegressionMeanReversion.cpp
-HEADERS=RegressionMeanReversion.h
+LIBRARY=DQNStrategy.so
+SOURCES=DQNStrategy.cpp
+HEADERS=DQNStrategy.h
 OBJECTS=$(SOURCES:.cpp=.o)
 
 .PHONY: all make_executable delete_instance clean_dlls move_strategy_dll build_strategy run_backtest
@@ -62,16 +61,17 @@ clean_dlls:
 move_strategy_dll: delete_instance clean_dlls all
 	cp $(LIBRARY) /home/vagrant/ss/bt/strategies_dlls/.
 
-update_parameter_txt:
-	pypy3 ./provision_scripts/update_parameters.py "$(PARAMETERS)"
+start_server: move_strategy_dll 
+	./provision_scripts/start_server.sh
 
-build_strategy: move_strategy_dll update_parameter_txt
-	./provision_scripts/build_strategy.sh "$(INSTANCE_NAME)" "$(STRATEGY_NAME)" "$(START_DATE)" "$(END_DATE)" "$(SYMBOLS)" "$(ACCOUNTSIZE)"
+create_instance: start_server
+	./provision_scripts/create_instance.sh "$(INSTANCE_NAME)" "$(STRATEGY_NAME)" "$(SYMBOLS)" "$(PARAMETERS)" "$(ACCOUNTSIZE)"
 
-run_backtest: build_strategy
-	chmod +x ./provision_scripts/run_backtest.sh
-	./provision_scripts/run_backtest.sh "$(INSTANCE_NAME)" "$(START_DATE)" "$(END_DATE)" "$(SYMBOLS)" "$(PARAMETERS)" "$(ACCOUNTSIZE)" "$(BACKTESTID)"
+run_backtest: create_instance
+	./provision_scripts/run_backtest.sh "$(INSTANCE_NAME)" "$(START_DATE)" "$(END_DATE)"
 
-get_results:
-	chmod +x ./provision_scripts/get_results.sh
-	./provision_scripts/get_results.sh "$(INSTANCE_NAME)" "$(START_DATE)" "$(END_DATE)" "$(SYMBOLS)" "$(PARAMETERS)" "$(ACCOUNTSIZE)" "$(BACKTESTID)"
+edit_params:
+	./provision_scripts/edit_params.sh "$(INSTANCE_NAME)" "$(STRATEGY_NAME)" "$(PARAMETERS)"
+
+
+

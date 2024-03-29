@@ -23,14 +23,14 @@ else
     echo "Directory already exists: $csv_dump_directory"
 fi
 
-# Start the backtesting server
-(cd /home/vagrant/ss/bt && pwd && ls && ./StrategyServerBacktesting&)
+# Start the backtesting server in a subshell and keep it running in the background
+(cd /home/vagrant/ss/bt && ./StrategyServerBacktesting&)
 
 echo "Sleeping for 2 seconds while waiting for strategy studio to boot"
 sleep 2
 
-# Start the backtest
-(cd /home/vagrant/ss/bt/utilities/ && pwd && ls && ./StrategyCommandLine cmd start_backtest "$startDate" "$endDate" "$instanceName" 0)
+# Start the backtest in another subshell
+(cd /home/vagrant/ss/bt/utilities/ && ./StrategyCommandLine cmd start_backtest "$startDate" "$endDate" "$instanceName" 0)
 
 foundFinishedLogFile=$(grep -nr "finished.$" /home/vagrant/ss/bt/logs/main_log.txt | gawk '{print $1}' FS=":"|tail -1)
 

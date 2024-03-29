@@ -30,7 +30,6 @@ RegressionMeanReversion::RegressionMeanReversion(StrategyID strategyID,
     }
 // Destructor for class
 RegressionMeanReversion::~RegressionMeanReversion(){
-
 }
 
 void RegressionMeanReversion::DefineStrategyParams(){
