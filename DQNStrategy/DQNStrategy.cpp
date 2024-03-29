@@ -43,9 +43,6 @@ void DQNStrategy::OnScheduledEvent(const ScheduledEventMsg& msg) {}
 void DQNStrategy::OnOrderUpdate(const OrderUpdateEventMsg& msg) {}
 
 void DQNStrategy::OnBar(const BarEventMsg& msg){
-    cout << "Bar event" << endl;
-    cout << msg. << endl;
-    cout << working << endl;
 }
 
 void DQNStrategy::OnQuote(const QuoteEventMsg& msg){}
