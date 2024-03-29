@@ -9,7 +9,6 @@ echo $startDate &&
 echo $endDate &&
 
 cd /home/vagrant/ss/bt/utilities/ && ./StrategyCommandLine cmd start_backtest "$startDate" "$endDate" "$instanceName" 0 
-echo " **************************************************************************************************** "
 
 # Path to your log file
 log_file="/home/vagrant/ss/bt/logs/main_log.txt"
@@ -28,3 +27,5 @@ while true; do
         break
     fi
 done
+echo "run backtest complete"
+echo " **************************************************************************************************** "
