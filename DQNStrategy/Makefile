@@ -23,7 +23,7 @@ SYMBOLS=XNAS.ITCH-AAPL
 PARAMETERS=name=DQNStrategy1|working=working
 ACCOUNTSIZE=1000000
 EPISODE_DATE=2023-11-30
-EPISODE_PARAMETERS=name=DQNStrategy1|working=working
+EPISODE_PARAMETERS=name=DQNStrategy2|working=workingverywell
 
 # Define the names of the library, source, and header files.
 LIBRARY=DQNStrategy.so
