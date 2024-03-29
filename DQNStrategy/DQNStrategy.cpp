@@ -44,7 +44,8 @@ void DQNStrategy::OnScheduledEvent(const ScheduledEventMsg& msg) {}
 void DQNStrategy::OnOrderUpdate(const OrderUpdateEventMsg& msg) {}
 
 void DQNStrategy::OnBar(const BarEventMsg& msg){
-    cout << params().GetParam("name") << " is " << params().GetParam("working") << endl;
+    cout << params().GetParam("name")->ToString() << endl;
+    cout << params().GetParam("working")->ToString() << endl;
 }
 
 void DQNStrategy::OnQuote(const QuoteEventMsg& msg){}
