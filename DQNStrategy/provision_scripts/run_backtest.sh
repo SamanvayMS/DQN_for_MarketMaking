@@ -12,18 +12,13 @@ cd /home/vagrant/ss/bt/utilities/ && ./StrategyCommandLine cmd start_backtest "$
 echo " **************************************************************************************************** "
 
 # Path to your log file
-log_file="path/to/your/logfile.log"
+log_file="/home/vagrant/ss/bt/logs/main_log.txt"
 sleep 1
 while true; do
     # Get the number of lines in the log file
     num_lines=$(wc -l < "$log_file")
     # Initialize line_number to 0
-    line_number=0
-    # Try to update line_number with the line number of the last "finished."
-    last_finished=$(grep -n "finished\.$" "$log_file" | tail -n 1 | cut -d: -f1)
-    if [ ! -z "$last_finished" ]; then
-        line_number=$last_finished
-    fi
+    line_number=$(grep -n "finished\.$" "$log_file" | tail -n 1 | cut -d: -f1)
     
     # Check if the last line ending with "finished." is the last line in the log file
     if [ "$num_lines" -gt "$line_number" ]; then
