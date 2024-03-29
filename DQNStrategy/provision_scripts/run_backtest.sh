@@ -24,7 +24,7 @@ while true; do
         echo "Waiting for strategy to finish"
         sleep 5
     else
-        last_cra_file=$(grep '\.cra' "$log_file_path" | tail -n1 | awk '{print $NF}')
+        last_cra_file=$(grep '\.cra' "$log_file" | tail -n1 | awk '{print $NF}')
         echo "Strategy finished"
     fi
 done
