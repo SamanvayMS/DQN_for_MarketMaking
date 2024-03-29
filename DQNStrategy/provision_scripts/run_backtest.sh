@@ -25,6 +25,7 @@ while true; do
         sleep 5
     else
         last_cra_file=$(grep '\.cra' "$log_file" | tail -n1 | awk '{print $NF}')
+        echo "The last .cra file mentioned is: $last_cra_file"
         echo "Strategy finished"
         break
     fi
