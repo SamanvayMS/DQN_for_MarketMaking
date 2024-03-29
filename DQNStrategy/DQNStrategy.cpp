@@ -24,8 +24,8 @@ DQNStrategy::DQNStrategy(StrategyID strategyID,
 DQNStrategy::~DQNStrategy(){}
 
 void DQNStrategy::DefineStrategyParams(){
-    params().CreateParam(CreateStrategyParamArgs("name", STRATEGY_PARAM_TYPE_RUNTIME, VALUE_TYPE_STRING, name));
-    params().CreateParam(CreateStrategyParamArgs("working", STRATEGY_PARAM_TYPE_RUNTIME, VALUE_TYPE_STRING, working));
+    params().CreateParam(CreateStrategyParamArgs("name", STRATEGY_PARAM_TYPE_STARTUP, VALUE_TYPE_STRING, name));
+    params().CreateParam(CreateStrategyParamArgs("working", STRATEGY_PARAM_TYPE_STARTUP, VALUE_TYPE_STRING, working));
 }
 
 void DQNStrategy::DefineStrategyCommands(){}
