@@ -20,8 +20,10 @@ STRATEGY_NAME=DQNStrategy# should be your cpp file name, single word, no special
 START_DATE=2023-11-30# start of the earliest date
 END_DATE=2023-11-30 # end of the latest date
 SYMBOLS=XNAS.ITCH-AAPL
-PARAMETERS=name=DQNStrategy|working=working
+PARAMETERS=name=DQNStrategy1|working=working
 ACCOUNTSIZE=1000000
+EPISODE_DATE=2023-11-30
+EPISODE_PARAMETERS=DQNStrategy1|working=working
 
 # Define the names of the library, source, and header files.
 LIBRARY=DQNStrategy.so
