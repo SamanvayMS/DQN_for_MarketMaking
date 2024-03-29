@@ -22,10 +22,12 @@ while true; do
     # Check if the last line ending with "finished." is the last line in the log file
     if [ "$num_lines" -gt "$line_number" ]; then
         echo "Waiting for strategy to finish"
-        sleep 1
+        sleep 5
     else
-        break
+        last_cra_file=$(grep '\.cra' "$log_file_path" | tail -n1 | awk '{print $NF}')
+        echo "Strategy finished"
     fi
 done
+
 echo "run backtest complete"
 echo " **************************************************************************************************** "
