@@ -23,7 +23,7 @@ SYMBOLS=XNAS.ITCH-AAPL
 PARAMETERS=name=DQNStrategy1|working=working
 ACCOUNTSIZE=1000000
 EPISODE_DATE=2023-11-30
-EPISODE_PARAMETERS=DQNStrategy1|working=working
+EPISODE_PARAMETERS=name=DQNStrategy1|working=working
 
 # Define the names of the library, source, and header files.
 LIBRARY=DQNStrategy.so
@@ -73,7 +73,7 @@ run_backtest: create_instance
 	./provision_scripts/run_backtest.sh "$(INSTANCE_NAME)" "$(START_DATE)" "$(END_DATE)"
 
 edit_params:
-	./provision_scripts/edit_params.sh "$(INSTANCE_NAME)" "$(STRATEGY_NAME)" "$(EPISODE_PARAMETERS)"
+	./provision_scripts/edit_parameters.sh "$(INSTANCE_NAME)" "$(STRATEGY_NAME)" "$(EPISODE_PARAMETERS)"
 
 edit_and_run_backtest: edit_params
 	./provision_scripts/run_backtest.sh "$(INSTANCE_NAME)" "$(EPISODE_DATE)" "$(EPISODE_DATE)"
