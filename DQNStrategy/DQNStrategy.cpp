@@ -36,7 +36,6 @@ void DQNStrategy::RegisterForStrategyEvents(StrategyEventRegister* eventRegister
         eventRegister->RegisterForBars(*it, BAR_TYPE_TIME, 10);
         }
 }
-
 void DQNStrategy::OnTrade(const TradeDataEventMsg& msg) {}
 
 void DQNStrategy::OnScheduledEvent(const ScheduledEventMsg& msg) {}
