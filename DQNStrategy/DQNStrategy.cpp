@@ -17,8 +17,8 @@ DQNStrategy::DQNStrategy(StrategyID strategyID,
                     const string& strategyName,
                     const string& groupName):
     Strategy(strategyID, strategyName, groupName),
-    name("DQNStrategy"),
-    working("working"){
+    name("wrong strategy name lolll"),
+    working("not working"){
     }
 // Destructor for class
 DQNStrategy::~DQNStrategy(){}
@@ -36,6 +36,7 @@ void DQNStrategy::RegisterForStrategyEvents(StrategyEventRegister* eventRegister
         eventRegister->RegisterForBars(*it, BAR_TYPE_TIME, 10);
         }
 }
+
 void DQNStrategy::OnTrade(const TradeDataEventMsg& msg) {}
 
 void DQNStrategy::OnScheduledEvent(const ScheduledEventMsg& msg) {}
@@ -43,6 +44,7 @@ void DQNStrategy::OnScheduledEvent(const ScheduledEventMsg& msg) {}
 void DQNStrategy::OnOrderUpdate(const OrderUpdateEventMsg& msg) {}
 
 void DQNStrategy::OnBar(const BarEventMsg& msg){
+    cout << params().GetParam("name") << " is " << params().GetParam("working") << endl;
 }
 
 void DQNStrategy::OnQuote(const QuoteEventMsg& msg){}
