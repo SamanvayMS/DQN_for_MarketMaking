@@ -15,7 +15,7 @@ INCLUDEPATH=../../../../includes
 INCLUDES=-I/usr/include -I$(INCLUDEPATH)
 LDFLAGS=$(LIBPATH)/libstrategystudio_analytics.a $(LIBPATH)/libstrategystudio.a $(LIBPATH)/libstrategystudio_transport.a $(LIBPATH)/libstrategystudio_marketmodels.a $(LIBPATH)/libstrategystudio_utilities.a $(LIBPATH)/libstrategystudio_flashprotocol.a
 
-INSTANCE_NAME=DQNStrategytest# single word, no special characters
+INSTANCE_NAME=DQNStrategy# single word, no special characters
 STRATEGY_NAME=DQNStrategy# should be your cpp file name, single word, no special characters
 START_DATE=2023-11-30# start of the earliest date
 END_DATE=2023-11-30 # end of the latest date
