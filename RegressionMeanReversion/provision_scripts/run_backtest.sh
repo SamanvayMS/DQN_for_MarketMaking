@@ -38,13 +38,13 @@ echo "Last line found:",$foundFinishedLogFile
 
 while ((logFileNumLines > foundFinishedLogFile))
 do
+    logFileNumLines=$(wc -l /home/vagrant/ss/bt/logs/main_log.txt | gawk '{print $1}')
     foundFinishedLogFile=$(grep -nr "finished.$" /home/vagrant/ss/bt/logs/main_log.txt | gawk '{print $1}' FS=":"|tail -1)
     echo "Waiting for strategy to finish"
     sleep 1
 done
 
 echo "Sleeping for 40 seconds..."
-sleep 40
 echo "run_backtest.sh completed"
 
 cd /home/vagrant/ss/bt/backtesting-results

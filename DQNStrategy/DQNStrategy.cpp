@@ -33,7 +33,7 @@ void DQNStrategy::DefineStrategyCommands(){}
 // By default, SS will register to trades/quotes/depth data for the instruments you have requested via command_line.
 void DQNStrategy::RegisterForStrategyEvents(StrategyEventRegister* eventRegister, DateType currDate){
     for (SymbolSetConstIter it = symbols_begin(); it != symbols_end(); ++it) {
-        eventRegister->RegisterForBars(*it, BAR_TYPE_TIME, 10);
+        eventRegister->RegisterForBars(*it, BAR_TYPE_TIME, 60);
         }
 }
 
@@ -44,8 +44,8 @@ void DQNStrategy::OnScheduledEvent(const ScheduledEventMsg& msg) {}
 void DQNStrategy::OnOrderUpdate(const OrderUpdateEventMsg& msg) {}
 
 void DQNStrategy::OnBar(const BarEventMsg& msg){
-    cout << params().GetParam("name")->ToString() << endl;
-    cout << params().GetParam("working")->ToString() << endl;
+//    cout << params().GetParam("name")->ToString() << endl;
+//    cout << params().GetParam("working")->ToString() << endl;
 }
 
 void DQNStrategy::OnQuote(const QuoteEventMsg& msg){}
