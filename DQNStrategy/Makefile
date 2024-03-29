@@ -73,7 +73,9 @@ run_backtest: create_instance
 	./provision_scripts/run_backtest.sh "$(INSTANCE_NAME)" "$(START_DATE)" "$(END_DATE)"
 
 edit_params:
-	./provision_scripts/edit_params.sh "$(INSTANCE_NAME)" "$(STRATEGY_NAME)" "$(PARAMETERS)"
+	./provision_scripts/edit_params.sh "$(INSTANCE_NAME)" "$(STRATEGY_NAME)" "$(EPISODE_PARAMETERS)"
 
+edit_and_run_backtest: edit_params
+	./provision_scripts/run_backtest.sh "$(INSTANCE_NAME)" "$(EPISODE_DATE)" "$(EPISODE_DATE)"
 
 
