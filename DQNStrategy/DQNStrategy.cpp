@@ -44,7 +44,7 @@ void DQNStrategy::OnOrderUpdate(const OrderUpdateEventMsg& msg) {}
 
 void DQNStrategy::OnBar(const BarEventMsg& msg){
     cout << "Bar event" << endl;
-    cout << name << endl;
+    cout << msg. << endl;
     cout << working << endl;
 }
 
@@ -54,4 +54,6 @@ void DQNStrategy::OnMarketState(const MarketStateEventMsg& msg){}
 
 void DQNStrategy::OnResetStrategyState(){}
 
-void DQNStrategy::OnParamChanged(StrategyParam& param) {}
+void DQNStrategy::OnParamChanged(StrategyParam& param) {
+    cout << param.param_name() << " has changed to " << param.ToString() << endl;
+}
