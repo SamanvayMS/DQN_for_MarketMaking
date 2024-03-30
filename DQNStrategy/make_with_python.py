@@ -1,23 +1,24 @@
 import subprocess
-import os
 import sys
-
 
 def make_with_python(command):
     try:
-        # Execute the command
-        result = subprocess.run(command,timeout=30)
+        # Execute the command with check=True to automatically raise an exception for non-zero return codes
+        subprocess.run(command, check=True, timeout=30)
         print("Command executed successfully.")
     except subprocess.CalledProcessError as e:
-        # This catches errors where the subprocess itself fails to run or returns a non-zero exit status.
+        # Catches errors where the subprocess itself fails to run or returns a non-zero exit status.
         print(f"Command '{e.cmd}' returned non-zero exit status {e.returncode}.")
-        print("Error output:", e.stderr)
+        sys.exit(1)  # Terminate the program
     except subprocess.TimeoutExpired as e:
+        # Catches timeout errors
         print(f"Command '{e.cmd}' timed out after {e.timeout} seconds.")
+        sys.exit(1)  # Terminate the program
     except Exception as e:
-        # This catches any other exceptions that are not subprocess.CalledProcessError.
+        # Catches any other exceptions
         print(f"An unexpected error occurred: {e}")
-        
+        sys.exit(1)  # Terminate the program
+
 if __name__=="__main__":
     # Command to execute
     episode_parameters = "name=DQNStrategy2|working=workingverywell"
