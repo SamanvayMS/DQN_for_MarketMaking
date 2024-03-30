@@ -12,7 +12,8 @@ endif
 
 LIBPATH=../../../../libs/x64
 INCLUDEPATH=../../../../includes
-INCLUDES=-I/usr/include -I$(INCLUDEPATH)
+SQLITEPATH=../../../../includes/sqlite_modern_cpp/hdr
+INCLUDES=-I/usr/include -I$(INCLUDEPATH) -I$(INCLUDEPATH)/ -I$(SQLITEPATH)
 LDFLAGS=$(LIBPATH)/libstrategystudio_analytics.a $(LIBPATH)/libstrategystudio.a $(LIBPATH)/libstrategystudio_transport.a $(LIBPATH)/libstrategystudio_marketmodels.a $(LIBPATH)/libstrategystudio_utilities.a $(LIBPATH)/libstrategystudio_flashprotocol.a
 
 INSTANCE_NAME=DQNStrategy# single word, no special characters
@@ -22,8 +23,7 @@ END_DATE=2023-11-30 # end of the latest date
 SYMBOLS=XNAS.ITCH-AAPL
 PARAMETERS=name=DQNStrategy1|working=working
 ACCOUNTSIZE=1000000
-EPISODE_DATE=2023-11-30
-EPISODE_PARAMETERS=name=DQNStrategy2|working=workingverywell
+
 WORKINGDIR=/home/vagrant/ss/sdk/RCM/StrategyStudio/examples/strategies/DQN_for_MarketMaking
 OUTPUT_DIR=$(WORKINGDIR)/{STRATEGY_NAME}/results
 FULL_REPORTS=True
@@ -74,15 +74,11 @@ move_strategy_dll: delete_instance clean_dlls all
 start_server: move_strategy_dll 
 	./provision_scripts/start_server.sh
 
-# builds the strategy and starts the server
-create_instance: 
-	./provision_scripts/create_instance.sh "$(INSTANCE_NAME)" "$(STRATEGY_NAME)" "$(SYMBOLS)" "$(PARAMETERS)" "$(ACCOUNTSIZE)"
-
 # ********************************************************************************************************************
 # The following commands are used to create an instance, edit the parameters, and run a backtest.
 # ********************************************************************************************************************
 
-# builds the strategy and starts the server
+# builds the strategy instance
 create_instance: 
 	./provision_scripts/create_instance.sh "$(INSTANCE_NAME)" "$(STRATEGY_NAME)" "$(SYMBOLS)" "$(PARAMETERS)" "$(ACCOUNTSIZE)"
 
