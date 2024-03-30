@@ -12,11 +12,11 @@ endif
 
 LIBPATH=../../../../libs/x64
 INCLUDEPATH=../../../../includes
-SQLITEPATH=groupstorage/group01/NNModels/sqllite_moder_cpp/hdr
-LIBTORCH_PATH=/groupstorage/group01/NNModels/libtorch
+SQLITEPATH=groupstorage/group01/includes/sqlite_modern_cpp/hdr
+LIBTORCH_PATH=/groupstorage/group01/includes/TorchIncludes/libtorch
 
-INCLUDES=-I/usr/include -I$(INCLUDEPATH) -I$(INCLUDEPATH)/ # -I$(LIBTORCH_PATH)/include -I$(LIBTORCH_PATH)/include/torch/csrc/api/include -I$(SQLITEPATH)/ 
-LDFLAGS=$(LIBPATH)/libstrategystudio_analytics.a $(LIBPATH)/libstrategystudio.a $(LIBPATH)/libstrategystudio_transport.a $(LIBPATH)/libstrategystudio_marketmodels.a $(LIBPATH)/libstrategystudio_utilities.a $(LIBPATH)/libstrategystudio_flashprotocol.a #-L$(LIBTORCH_PATH)/lib -ltorch -lc10
+INCLUDES=-I/usr/include -I$(INCLUDEPATH) -I$(INCLUDEPATH)/ -I$(LIBTORCH_PATH)/include -I$(LIBTORCH_PATH)/include/torch/csrc/api/include -I$(SQLITEPATH)/ 
+LDFLAGS=$(LIBPATH)/libstrategystudio_analytics.a $(LIBPATH)/libstrategystudio.a $(LIBPATH)/libstrategystudio_transport.a $(LIBPATH)/libstrategystudio_marketmodels.a $(LIBPATH)/libstrategystudio_utilities.a $(LIBPATH)/libstrategystudio_flashprotocol.a -L$(LIBTORCH_PATH)/lib -ltorch -lc10
 
 INSTANCE_NAME=DQNStrategy# single word, no special characters
 STRATEGY_NAME=DQNStrategy# should be your cpp file name, single word, no special characters
