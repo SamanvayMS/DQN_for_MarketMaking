@@ -5,9 +5,8 @@ import os
 def make_with_python(command):
     try:
         # Execute the command
-        result = subprocess.run(command, capture_output=True, text=True, check=True, timeout=60)
+        result = subprocess.run(command,timeout=30)
         print("Command executed successfully.")
-        print("Output:", result.stdout)
     except subprocess.CalledProcessError as e:
         # This catches errors where the subprocess itself fails to run or returns a non-zero exit status.
         print(f"Command '{e.cmd}' returned non-zero exit status {e.returncode}.")
