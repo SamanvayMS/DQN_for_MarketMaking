@@ -19,7 +19,8 @@ while true; do
     num_lines=$(wc -l < "$log_file")
     # Initialize line_number to 0
     line_number=$(grep -n "finished\.$" "$log_file" | tail -n 1 | cut -d: -f1)
-    
+    echo "$num_lines"
+    echo "$line_number"
     # Check if the last line ending with "finished." is the last line in the log file
     if [ "$num_lines" -gt "$line_number" ]; then
         echo "Waiting for strategy to finish"
