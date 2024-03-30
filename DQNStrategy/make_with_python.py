@@ -3,15 +3,20 @@ import os
 
 
 def make_with_python(command):
-    # Execute the command
-    result = subprocess.run(command, capture_output=True, text=True)
-
-    # Check the result
-    if result.returncode == 0:
+    try:
+        # Execute the command
+        result = subprocess.run(command, capture_output=True, text=True, check=True, timeout=60)
         print("Command executed successfully.")
         print("Output:", result.stdout)
-    else:
-        print("Error occurred:", result.stderr)
+    except subprocess.CalledProcessError as e:
+        # This catches errors where the subprocess itself fails to run or returns a non-zero exit status.
+        print(f"Command '{e.cmd}' returned non-zero exit status {e.returncode}.")
+        print("Error output:", e.stderr)
+    except subprocess.TimeoutExpired as e:
+        print(f"Command '{e.cmd}' timed out after {e.timeout} seconds.")
+    except Exception as e:
+        # This catches any other exceptions that are not subprocess.CalledProcessError.
+        print(f"An unexpected error occurred: {e}")
         
 if __name__=="__main__":
     # Command to execute
