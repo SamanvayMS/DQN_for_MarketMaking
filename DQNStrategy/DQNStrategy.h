@@ -40,69 +40,66 @@
 #include <algorithm> 
 #include <cmath>
 #include <memory>
+#include <vector>
+// Class declaration
+// #include <sqlite_modern_cpp.h>
 
 // Import namespace RCM::StrategyStudio to avoid explicit namespace qualification when using names from this namespace
 using namespace RCM::StrategyStudio;
 using namespace RCM::StrategyStudio::Utilities;
 using namespace std;
 
-// Class declaration
-#include <sqlite_modern_cpp.h>
-#include <vector>
+// // Assuming State is a vector of floats. Adjust according to your actual state representation.
+// using State = std::vector<float>;
 
-// Assuming State is a vector of floats. Adjust according to your actual state representation.
-using State = std::vector<float>;
+// class ExperienceReplayDatabase {
+// public:
+//     ExperienceReplayDatabase(const std::string& db_path) {
+//         db = std::make_unique<sqlite::database>(db_path);
 
-class ExperienceReplayDatabase {
-public:
-    ExperienceReplayDatabase(const std::string& db_path) {
-        db = std::make_unique<sqlite::database>(db_path);
+//         // Initialize the database schema if it doesn't exist
+//         (*db) <<
+//             "CREATE TABLE IF NOT EXISTS experience ("
+//             "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+//             "state TEXT,"
+//             "action INTEGER,"
+//             "reward REAL,"
+//             "next_state TEXT,"
+//             "done INTEGER);"; // Using INTEGER for boolean flag
+//     }
 
-        // Initialize the database schema if it doesn't exist
-        (*db) <<
-            "CREATE TABLE IF NOT EXISTS experience ("
-            "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-            "state TEXT,"
-            "action INTEGER,"
-            "reward REAL,"
-            "next_state TEXT,"
-            "done INTEGER);"; // Using INTEGER for boolean flag
-    }
+//     void addExperience(const State& state, int action, float reward, const State& next_state, bool done) {
+//         std::string state_str = serializeState(state);
+//         std::string next_state_str = serializeState(next_state);
+//         int done_int = done ? 1 : 0;
 
-    void addExperience(const State& state, int action, float reward, const State& next_state, bool done) {
-        std::string state_str = serializeState(state);
-        std::string next_state_str = serializeState(next_state);
-        int done_int = done ? 1 : 0;
+//         (*db) <<
+//             "INSERT INTO experience (state, action, reward, next_state, done) VALUES (?,?,?,?,?);"
+//             << state_str
+//             << action
+//             << reward
+//             << next_state_str
+//             << done_int;
+//     }
 
-        (*db) <<
-            "INSERT INTO experience (state, action, reward, next_state, done) VALUES (?,?,?,?,?);"
-            << state_str
-            << action
-            << reward
-            << next_state_str
-            << done_int;
-    }
+//     // Implement methods to sample experiences, etc., as needed
 
-    // Implement methods to sample experiences, etc., as needed
+// private:
+//     std::unique_ptr<sqlite::database> db;
 
-private:
-    std::unique_ptr<sqlite::database> db;
+//     std::string serializeState(const State& state) {
+//         std::ostringstream oss;
+//         if (!state.empty()) {
+//             // Convert each element to string and concatenate with a separator
+//             std::copy(state.begin(), state.end() - 1, std::ostream_iterator<float>(oss, ","));
+//             // Add the last element without a trailing comma
+//             oss << state.back();
+//         }
+//         return oss.str();
+//     }
 
-    std::string serializeState(const State& state) {
-        std::ostringstream oss;
-        if (!state.empty()) {
-            // Convert each element to string and concatenate with a separator
-            std::copy(state.begin(), state.end() - 1, std::ostream_iterator<float>(oss, ","));
-            // Add the last element without a trailing comma
-            oss << state.back();
-        }
-        return oss.str();
-    }
-
-    // You might also need a method to deserialize states if you plan to retrieve and use them
-};
-
-
+//     // You might also need a method to deserialize states if you plan to retrieve and use them
+// };
 class DQNStrategy : public Strategy {
 
 public:
