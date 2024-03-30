@@ -24,6 +24,9 @@ PARAMETERS=name=DQNStrategy1|working=working
 ACCOUNTSIZE=1000000
 EPISODE_DATE=2023-11-30
 EPISODE_PARAMETERS=name=DQNStrategy2|working=workingverywell
+WORKINGDIR=/home/vagrant/ss/sdk/RCM/StrategyStudio/examples/strategies/DQN_for_MarketMaking
+OUTPUT_DIR=$(WORKINGDIR)/{STRATEGY_NAME}/results
+FULL_REPORTS=True
 
 # Define the names of the library, source, and header files.
 LIBRARY=DQNStrategy.so
@@ -44,6 +47,7 @@ $(LIBRARY) : $(OBJECTS)
 clean: 
 	rm -rf *.o $(LIBRARY)
 
+# Simplifies the process of resetting local changes and pulling the latest code from the repository.
 git_pull:
 	chmod +x ./provision_scripts/git_pull.sh
 	./provision_scripts/git_pull.sh
@@ -53,28 +57,48 @@ make_executable:
 	chmod +x ./provision_scripts/*.py
 #	ls -l ./provision_scripts/
 
+# deletes the instance from the sqlite database
 delete_instance: make_executable
 	pypy3 ./provision_scripts/delete_instance.py "$(INSTANCE_NAME)" "$(STRATEGY_NAME)"
 
+# previous dlls need to be removed from the strategies_dlls folder
 clean_dlls:
 	mkdir -p /home/vagrant/ss/bt/strategies_dlls
 	rm -rf /home/vagrant/ss/bt/strategies_dlls/*
 
+# moves the dll to the strategies_dlls folder
 move_strategy_dll: delete_instance clean_dlls all
 	cp $(LIBRARY) /home/vagrant/ss/bt/strategies_dlls/.
 
+# starts the server while performing above actions
 start_server: move_strategy_dll 
 	./provision_scripts/start_server.sh
 
-create_instance: start_server
+# builds the strategy and starts the server
+create_instance: 
 	./provision_scripts/create_instance.sh "$(INSTANCE_NAME)" "$(STRATEGY_NAME)" "$(SYMBOLS)" "$(PARAMETERS)" "$(ACCOUNTSIZE)"
 
+# ********************************************************************************************************************
+# The following commands are used to create an instance, edit the parameters, and run a backtest.
+# ********************************************************************************************************************
+
+# builds the strategy and starts the server
+create_instance: 
+	./provision_scripts/create_instance.sh "$(INSTANCE_NAME)" "$(STRATEGY_NAME)" "$(SYMBOLS)" "$(PARAMETERS)" "$(ACCOUNTSIZE)"
+
+# runs the backtest but does not process the results
 run_backtest: create_instance
 	./provision_scripts/run_backtest.sh "$(INSTANCE_NAME)" "$(START_DATE)" "$(END_DATE)"
 
+# runs the backtest and processes the results
+run_backtest_with_results: create_instance
+	./provision_scripts/generate_results.sh "$(INSTANCE_NAME)" "$(START_DATE)" "$(END_DATE)" "$(OUTPUT_DIR)" "$(FULL_REPORTS)"
+
+# edits the parameters of the instance
 edit_params:
 	./provision_scripts/edit_parameters.sh "$(INSTANCE_NAME)" "$(STRATEGY_NAME)" "$(EPISODE_PARAMETERS)"
 
+# edits the parameters and runs the backtest
 edit_and_run_backtest: edit_params
 	./provision_scripts/run_backtest.sh "$(INSTANCE_NAME)" "$(EPISODE_DATE)" "$(EPISODE_DATE)"
 

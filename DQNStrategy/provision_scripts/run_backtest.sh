@@ -12,6 +12,7 @@ cd /home/vagrant/ss/bt/utilities/ && ./StrategyCommandLine cmd start_backtest "$
 
 # Path to your log file
 log_file="/home/vagrant/ss/bt/logs/main_log.txt"
+
 sleep 1
 while true; do
     # Get the number of lines in the log file
@@ -25,7 +26,8 @@ while true; do
         sleep 5
     else
         last_cra_file=$(grep '\.cra' "$log_file" | tail -n1 | awk '{print $NF}')
-        echo "The last .cra file mentioned is: $last_cra_file"
+        echo "found CRA file :- "
+        echo "$last_cra_file"
         echo "Strategy finished"
         break
     fi

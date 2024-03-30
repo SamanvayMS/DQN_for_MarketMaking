@@ -10,5 +10,6 @@ echo "Creating instance"
 cd /home/vagrant/ss/bt/utilities
 ./StrategyCommandLine cmd create_instance "$instanceName" "$strategyName" UIUC SIM-1001-101 dlariviere $accountsize -symbols $symbols -params $params
 echo "Created instance" 
-./StrategyCommandLine cmd recheck_strategies 
+echo "active instance list:- "
+./StrategyCommandLine cmd strategy_instance_list
 echo " **************************************************************************************************** "
