@@ -1,5 +1,6 @@
 import subprocess
 import os
+import sys
 
 
 def make_with_python(command):
@@ -19,7 +20,22 @@ def make_with_python(command):
         
 if __name__=="__main__":
     # Command to execute
-    command = ["make", "start_server"]
+    episode_parameters = "name=DQNStrategy2|working=workingverywell"
+    episode_date = "2023-11-30"
+    if sys.argv[1] == 0:
+        commands = [
+            ["make", "start_server"],
+            ["make", "create_instance"],
+            ["make", "run_backtest"]
+            ]
+    else:
+        commands = [
+            ["make", "start_server"],
+            ["make", "create_instance"],
+            ["make", "edit_params", f"EPISODE_PARAMETERS={episode_parameters}"],
+            ["make", "run_backtest", f"START_DATE={episode_date}", f"END_DATE={episode_date}"]
+            ]
     
     # Execute the command
-    make_with_python(command)
+    for command in commands:
+        make_with_python(command)

@@ -87,19 +87,16 @@ create_instance:
 	./provision_scripts/create_instance.sh "$(INSTANCE_NAME)" "$(STRATEGY_NAME)" "$(SYMBOLS)" "$(PARAMETERS)" "$(ACCOUNTSIZE)"
 
 # runs the backtest but does not process the results
-run_backtest: create_instance
+run_backtest:
 	./provision_scripts/run_backtest.sh "$(INSTANCE_NAME)" "$(START_DATE)" "$(END_DATE)"
 
 # runs the backtest and processes the results
-run_backtest_with_results: create_instance
+run_backtest_with_results:
 	./provision_scripts/generate_results.sh "$(INSTANCE_NAME)" "$(START_DATE)" "$(END_DATE)" "$(OUTPUT_DIR)" "$(FULL_REPORTS)"
 
 # edits the parameters of the instance
 edit_params:
 	./provision_scripts/edit_parameters.sh "$(INSTANCE_NAME)" "$(STRATEGY_NAME)" "$(EPISODE_PARAMETERS)"
 
-# edits the parameters and runs the backtest
-edit_and_run_backtest: edit_params
-	./provision_scripts/run_backtest.sh "$(INSTANCE_NAME)" "$(EPISODE_DATE)" "$(EPISODE_DATE)"
 
 
