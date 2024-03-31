@@ -42,7 +42,8 @@
 #include <memory>
 #include <vector>
 // Class declaration
-#include <sqlite_modern_cpp.h>
+#include "sqlite_modern_cpp.h"
+#include "torch/torch.h"
 
 // Import namespace RCM::StrategyStudio to avoid explicit namespace qualification when using names from this namespace
 using namespace RCM::StrategyStudio;
