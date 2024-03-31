@@ -23,7 +23,7 @@ if __name__=="__main__":
     # Command to execute
     episode_parameters = "name=DQNStrategy2|working=workingverywell"
     episode_date = "2023-11-30"
-    if sys.argv[1] == 0:
+    if sys.argv[1] == "0":
         commands = [
             ["make", "start_server"],
             ["make", "create_instance"],
