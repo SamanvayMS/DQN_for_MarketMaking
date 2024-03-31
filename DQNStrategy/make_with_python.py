@@ -4,20 +4,19 @@ import sys
 def make_with_python(command):
     try:
         # Execute the command with check=True to automatically raise an exception for non-zero return codes
-        subprocess.run(command, check=True, timeout=100)
+        subprocess.run(command, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=100)
         print("Command executed successfully.")
+        return True  # Indicates success
     except subprocess.CalledProcessError as e:
         # Catches errors where the subprocess itself fails to run or returns a non-zero exit status.
         print(f"Command '{e.cmd}' returned non-zero exit status {e.returncode}.")
-        sys.exit(1)  # Terminate the program
     except subprocess.TimeoutExpired as e:
         # Catches timeout errors
         print(f"Command '{e.cmd}' timed out after {e.timeout} seconds.")
-        sys.exit(1)  # Terminate the program
     except Exception as e:
         # Catches any other exceptions
         print(f"An unexpected error occurred: {e}")
-        sys.exit(1)  # Terminate the program
+    return False  # Indicates failure
 
 if __name__=="__main__":
     # Command to execute
@@ -28,15 +27,17 @@ if __name__=="__main__":
             ["make", "start_server"],
             ["make", "create_instance"],
             ["make", "run_backtest"]
-            ]
+        ]
     else:
         commands = [
             ["make", "start_server"],
             ["make", "create_instance"],
             ["make", "edit_params", f"EPISODE_PARAMETERS={episode_parameters}"],
             ["make", "run_backtest", f"START_DATE={episode_date}", f"END_DATE={episode_date}"]
-            ]
+        ]
     
-    # Execute the command
+    # Execute the commands, stopping if one fails
     for command in commands:
-        make_with_python(command)
+        success = make_with_python(command)
+        if not success:
+            sys.exit(1)  # Terminate the program if a command fails
