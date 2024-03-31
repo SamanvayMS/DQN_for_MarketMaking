@@ -11,7 +11,6 @@ using namespace RCM::StrategyStudio::MarketModels;
 using namespace RCM::StrategyStudio::Utilities;
 
 using namespace std;
-using namespace torch;
 
 // Constructor to initialize member variables of the class to their initial values.
 DQNStrategy::DQNStrategy(StrategyID strategyID,
@@ -20,7 +19,7 @@ DQNStrategy::DQNStrategy(StrategyID strategyID,
     Strategy(strategyID, strategyName, groupName),
     name("wrong strategy name lolll"),
     working("not working"),
-    state(eye(3)){
+    state(torch::eye(3)){
     }
 // Destructor for class
 DQNStrategy::~DQNStrategy(){}
