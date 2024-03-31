@@ -16,12 +16,12 @@ SQLITEPATH=groupstorage/group01/includes/sqlite_modern_cpp/hdr
 LIBTORCH_PATH=/groupstorage/group01/includes/TorchIncludes/libtorch
 
 INCLUDES=-I/usr/include -I$(INCLUDEPATH) -I$(INCLUDEPATH)/ -I$(LIBTORCH_PATH)/include -I$(LIBTORCH_PATH)/include/torch/csrc/api/include -I$(SQLITEPATH)/
-LDFLAGS=$(LIBPATH)/libstrategystudio_analytics.a $(LIBPATH)/libstrategystudio.a $(LIBPATH)/libstrategystudio_transport.a $(LIBPATH)/libstrategystudio_marketmodels.a $(LIBPATH)/libstrategystudio_utilities.a $(LIBPATH)/libstrategystudio_flashprotocol.a -lsqlite3 #-L$(LIBTORCH_PATH)/lib -ltorch -lc10
+LDFLAGS=$(LIBPATH)/libstrategystudio_analytics.a $(LIBPATH)/libstrategystudio.a $(LIBPATH)/libstrategystudio_transport.a $(LIBPATH)/libstrategystudio_marketmodels.a $(LIBPATH)/libstrategystudio_utilities.a $(LIBPATH)/libstrategystudio_flashprotocol.a -lsqlite3 -L$(LIBTORCH_PATH)/lib -ltorch -lc10 -Wl,-rpath,$(LIBTORCH_PATH)/lib
 
 INSTANCE_NAME=DQNStrategy# single word, no special characters
 STRATEGY_NAME=DQNStrategy# should be your cpp file name, single word, no special characters
 START_DATE=2023-11-30# start of the earliest date
-END_DATE=2023-11-30 # end of the latest date
+END_DATE=2023-11-30# end of the latest date
 SYMBOLS=XNAS.ITCH-AAPL
 PARAMETERS=name=DQNStrategy1|working=working
 ACCOUNTSIZE=1000000
