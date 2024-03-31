@@ -12,7 +12,7 @@ endif
 
 LIBPATH=../../../../libs/x64
 INCLUDEPATH=../../../../includes
-SQLITEPATH=groupstorage/group01/includes/sqlite_modern_cpp/hdr
+SQLITEPATH=/groupstorage/group01/includes/sqlite_modern_cpp/hdr
 LIBTORCH_PATH=/groupstorage/group01/includes/TorchIncludes/libtorch
 
 INCLUDES=-I/usr/include -I$(INCLUDEPATH) -I$(INCLUDEPATH)/ -I$(LIBTORCH_PATH)/include -I$(LIBTORCH_PATH)/include/torch/csrc/api/include -I$(SQLITEPATH)/
