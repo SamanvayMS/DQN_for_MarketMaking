@@ -4,7 +4,7 @@ import sys
 def make_with_python(command):
     try:
         # Execute the command with check=True to automatically raise an exception for non-zero return codes
-        subprocess.run(command, check=True, timeout=30)
+        subprocess.run(command, check=True, timeout=100)
         print("Command executed successfully.")
     except subprocess.CalledProcessError as e:
         # Catches errors where the subprocess itself fails to run or returns a non-zero exit status.
