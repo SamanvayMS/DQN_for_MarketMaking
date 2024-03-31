@@ -5,9 +5,9 @@ else
 endif
 
 ifdef DEBUG
-    CFLAGS=-c -g -fPIC -fpermissive -std=c++11
+    CFLAGS=-c -g -fPIC -fpermissive -std=c++17
 else
-    CFLAGS=-c -fPIC -fpermissive -O3 -std=c++11
+    CFLAGS=-c -fPIC -fpermissive -O3 -std=c++17
 endif
 
 LIBPATH=../../../../libs/x64
