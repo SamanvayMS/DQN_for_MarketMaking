@@ -49,6 +49,7 @@
 using namespace RCM::StrategyStudio;
 using namespace RCM::StrategyStudio::Utilities;
 using namespace std;
+using namespace torch;
 
 // Assuming State is a vector of floats. Adjust according to your actual state representation.
 using State = std::vector<float>;
@@ -173,6 +174,7 @@ private:
     // Used to store the state and data of the strategy.
     string name;
     string working;
+    Tensor state;
 };
 
 // extern "C" is used to tell the compiler that these functions have C-style linkage instead of C++-style linkage, which means the function names will not be mangled.
