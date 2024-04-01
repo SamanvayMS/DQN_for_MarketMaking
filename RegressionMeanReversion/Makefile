@@ -28,9 +28,9 @@ OUTPUT_DIR=$(WORKINGDIR)/${STRATEGY_NAME}/results
 FULL_REPORTS=True
 
 # Define the names of the library, source, and header files.
-LIBRARY=DQNStrategy.so
-SOURCES=DQNStrategy.cpp
-HEADERS=DQNStrategy.h
+LIBRARY=RegressionMeanReversion.so
+SOURCES=RegressionMeanReversion.cpp
+HEADERS=RegressionMeanReversion.h
 OBJECTS=$(SOURCES:.cpp=.o)
 
 .PHONY: all make_executable delete_instance clean_dlls move_strategy_dll build_strategy run_backtest
