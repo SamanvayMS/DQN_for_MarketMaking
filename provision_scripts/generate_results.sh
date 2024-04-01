@@ -14,6 +14,11 @@ if [ -z "$last_cra_file_name" ]; then
     exit 1
 fi
 
+# Check if output directory exists; if not, create it
+if [ ! -d "$outputDirectory" ]; then
+    mkdir -p "$outputDirectory"
+fi
+
 echo "last cra file name: $last_cra_file_name"
 cd /home/vagrant/ss/bt/utilities/ && ./StrategyCommandLine cmd export_cra_file "$last_cra_file_name" "$output_directory" "$fullReports" "$fullReports"
 echo "output directory: $outputDirectory"
