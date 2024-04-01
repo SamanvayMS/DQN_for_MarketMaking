@@ -23,7 +23,7 @@ fi
 
 echo "cra file name: $last_cra_file_name"
 cd /home/vagrant/ss/bt/utilities/ 
-./StrategyCommandLine cmd export_cra_file "$CRA_path$last_cra_file_name" "$output_directory" "$fullReports" "$fullReports"
+./StrategyCommandLine cmd export_cra_file "$CRA_path$last_cra_file_name"
 echo "output directory: $outputDirectory"
 echo "****************************************************************************************************"
 
