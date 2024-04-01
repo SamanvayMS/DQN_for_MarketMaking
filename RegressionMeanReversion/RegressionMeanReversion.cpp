@@ -41,6 +41,7 @@ void RegressionMeanReversion::DefineStrategyParams(){
     params().CreateParam(CreateStrategyParamArgs("inventory_liquidation_interval", STRATEGY_PARAM_TYPE_STARTUP, VALUE_TYPE_INT, inventory_liquidation_interval_));
     params().CreateParam(CreateStrategyParamArgs("bar_interval", STRATEGY_PARAM_TYPE_STARTUP, VALUE_TYPE_INT, bar_interval_));
     params().CreateParam(CreateStrategyParamArgs("strategy_active", STRATEGY_PARAM_TYPE_STARTUP, VALUE_TYPE_BOOL, strategy_active_));
+    params().CreateParam(CreateStrategyParamArgs("previous_prediction", STRATEGY_PARAM_TYPE_STARTUP, VALUE_TYPE_DOUBLE, previous_prediction_));
 }
 
 void RegressionMeanReversion::DefineStrategyCommands(){
@@ -87,7 +88,7 @@ void RegressionMeanReversion::OnOrderUpdate(const OrderUpdateEventMsg& msg) {
 void RegressionMeanReversion::OnBar(const BarEventMsg& msg){ 
 
     bool strategy_active;
-    double window_size;
+    int window_size;
     double previous_prediction;
     if (!(params().GetParam("strategy_active")->Get(&strategy_active) and params().GetParam("window_size")->Get(&window_size) and params().GetParam("previous_prediction")->Get(&previous_prediction))){
         cout << "Error in getting parameters" << endl;
