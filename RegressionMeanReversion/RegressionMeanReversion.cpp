@@ -107,14 +107,14 @@ void RegressionMeanReversion::OnBar(const BarEventMsg& msg){
     double prediction = reg_pair.prediction;
 
     if (reg_iter->second.FullyInitialized() and strategy_active) {
-        if (debug_)
+        if (params().GetParam("debug")->Equals(true))
             cout << "predicted value is " << prediction << "while current bid is " << msg.instrument().top_quote().bid() << "and current ask is " << msg.instrument().top_quote().ask() << endl;
         if (previous_prediction > msg.instrument().top_quote().ask() and slope > 0 ) {
             SendOrder(&msg.instrument(), 1);
         } else if (previous_prediction < msg.instrument().top_quote().bid() and slope < 0 ){
             SendOrder(&msg.instrument(), -1);
         } else {
-            if (debug_)
+            if (params().GetParam("debug")->Equals(true))
                 cout << "No trade" << endl;
         }
         params().GetParam("previous_prediction")->SetValue(prediction);
@@ -136,7 +136,7 @@ void RegressionMeanReversion::InventoryLiquidation(){
     if (max_inventory < 0)
         max_inventory = 0;
 
-    if (debug_){
+    if (params().GetParam("debug")->Equals(true)){
         cout << "liquidating inventory by " << inventory_liquidation_increment << endl;
         cout << "max inventory is now " << max_inventory << endl;
     }
@@ -145,14 +145,14 @@ void RegressionMeanReversion::InventoryLiquidation(){
 void RegressionMeanReversion::SetInventoryParams(){
     int inventory_liquidation_increment;
     int max_inventory;
-    if (!(params().GetParam("inventory_liquidation_increment")->Get(&inventory_liquidation_increment)) and params().GetParam("max_inventory")->Get(&max_inventory)){
+    if (!(params().GetParam("inventory_liquidation_increment")->Get(&inventory_liquidation_increment)) and params().GetParam("max_inventory")->Get(&max_inventory) and params().GetParam("debug")->Get(&debug)){
         cout << "Error in getting parameters" << endl;
         return;
     }
 
     inventory_liquidation_increment = int(max_inventory/inventory_liquidation_increment)+1;
     params().GetParam("inventory_liquidation_increment")->SetValue(inventory_liquidation_increment);
-    if (debug_)
+    if (params().GetParam("debug")->Equals(true))
         cout << "liquidation increment :- " << inventory_liquidation_increment << endl;
 }
 
@@ -164,7 +164,8 @@ double RegressionMeanReversion::CalculateMidPrice(const Instrument* instrument) 
 }
 
 void RegressionMeanReversion::RecordAccountStats(const Instrument* instrument){
-    if (debug_){
+
+    if (params().GetParam("debug")->Equals(true)){
         cout << "Total PNL " << portfolio().total_pnl(instrument) << endl;
         cout << "Unrealised PNL " << portfolio().unrealized_pnl(instrument) << endl;
         cout << "Realised PNL " << portfolio().realized_pnl(instrument) << endl;
@@ -187,7 +188,7 @@ int RegressionMeanReversion::MaxPossibleLots(const Instrument* instrument,int si
     } else {
         max_order_size = max_inventory + current_position;
     }
-    if (debug_){
+    if (params().GetParam("debug")->Equals(true)){
         cout << "max position:- " << max_inventory << endl;
         cout << "position :- " << current_position << endl;
         cout << "max order size :- " << max_order_size << endl;
@@ -209,7 +210,7 @@ void RegressionMeanReversion::SendOrder(const Instrument* instrument, int side){
     if (upper_limit < trade_size)
         trade_size = upper_limit;
 
-    OrderParams params(*instrument,
+    OrderParams params_(*instrument,
                        trade_size,
                        price,
                        MARKET_CENTER_ID_NASDAQ,
@@ -218,7 +219,7 @@ void RegressionMeanReversion::SendOrder(const Instrument* instrument, int side){
                        ORDER_TYPE_MARKET);
     if (trade_size == 0)
         return;
-    if (debug_){
+    if (params().GetParam("debug")->Equals(true)){
     // Print a message indicating that a new order is being sent
     std::cout << "SendTradeOrder(): about to send new order for size "
             << trade_size
@@ -228,7 +229,7 @@ void RegressionMeanReversion::SendOrder(const Instrument* instrument, int side){
             << instrument->symbol()
             << std::endl;
     }
-    trade_actions()->SendNewOrder(params);
+    trade_actions()->SendNewOrder(params_);
 }
 
 void RegressionMeanReversion::OnMarketState(const MarketStateEventMsg& msg){
@@ -248,7 +249,7 @@ void RegressionMeanReversion::LiquidationOrder(const Instrument* instrument){
     double price = (inventory > 0) ? instrument->top_quote().bid() - 10 : instrument->top_quote().ask() + 10;
     OrderSide action = (inventory > 0) ? ORDER_SIDE_SELL : ORDER_SIDE_BUY;
 
-    OrderParams params(*instrument,
+    OrderParams params_(*instrument,
                        abs(inventory),
                        price,
                        MARKET_CENTER_ID_NASDAQ,
@@ -256,7 +257,7 @@ void RegressionMeanReversion::LiquidationOrder(const Instrument* instrument){
                        ORDER_TIF_DAY,
                        ORDER_TYPE_LIMIT);
 
-    if (debug_){
+    if (params().GetParam("debug")->Equals(true)){
     // Print a message indicating that a new order is being sent
     std::cout << "Closing ourt all positions with order for size "
             << inventory
@@ -266,7 +267,7 @@ void RegressionMeanReversion::LiquidationOrder(const Instrument* instrument){
             << instrument->symbol()
             << std::endl;
     }
-    trade_actions()->SendNewOrder(params);
+    trade_actions()->SendNewOrder(params_);
 }
 
 void RegressionMeanReversion::OnResetStrategyState() {
