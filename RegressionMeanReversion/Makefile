@@ -87,7 +87,7 @@ run_backtest:
 
 # runs the backtest and processes the results
 run_backtest_with_results:
-	$(WORKINGDIR)/provision_scripts/generate_results.sh "$(INSTANCE_NAME)" "$(START_DATE)" "$(END_DATE)" "$(OUTPUT_DIR)" "$(FULL_REPORTS)"
+	$(WORKINGDIR)/provision_scripts/generate_results.sh "$(WORKINGDIR)" "$(INSTANCE_NAME)" "$(START_DATE)" "$(END_DATE)" "$(OUTPUT_DIR)" "$(FULL_REPORTS)"
 
 # edits the parameters of the instance
 edit_params:
