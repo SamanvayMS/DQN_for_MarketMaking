@@ -36,6 +36,7 @@ while true; do
             sleep 5
         else
             last_cra_file=$(grep '\.cra' "$log_file" | tail -n1 | awk '{print $NF}')
+            last_cra_file=$(basename "$last_cra_file")
             echo "found CRA file :- "
             echo "$last_cra_file"
             echo "Strategy finished"

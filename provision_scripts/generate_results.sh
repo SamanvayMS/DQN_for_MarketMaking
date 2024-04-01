@@ -5,6 +5,7 @@ endDate="$4"
 outputDirectory="$5"
 fullReports="$6"
 
+CRA_path = "/home/vagrant/ss/bt/backtesting-results/"
 # runs the backtest and gets the last cra file name
 last_cra_file_name=$("$workingDir"/provision_scripts/run_backtest.sh "$instanceName" "$startDate" "$endDate" | grep '\.cra' | tail -n1 | awk '{print $NF}')
 
@@ -20,7 +21,7 @@ if [ ! -d "$outputDirectory" ]; then
 fi
 
 echo "cra file name: $last_cra_file_name"
-cd /home/vagrant/ss/bt/utilities/ && ./StrategyCommandLine cmd export_cra_file ."$last_cra_file_name" "$output_directory" "$fullReports" "$fullReports"
+cd /home/vagrant/ss/bt/utilities/ && ./StrategyCommandLine cmd export_cra_file CRA_path"$last_cra_file_name" "$output_directory" "$fullReports" "$fullReports"
 echo "output directory: $outputDirectory"
 echo "****************************************************************************************************"
 
