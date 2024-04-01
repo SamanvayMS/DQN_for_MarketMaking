@@ -145,7 +145,7 @@ void RegressionMeanReversion::InventoryLiquidation(){
 void RegressionMeanReversion::SetInventoryParams(){
     int inventory_liquidation_increment;
     int max_inventory;
-    if (!(params().GetParam("inventory_liquidation_increment")->Get(&inventory_liquidation_increment)) and params().GetParam("max_inventory")->Get(&max_inventory) and params().GetParam("debug")->Get(&debug)){
+    if (!(params().GetParam("inventory_liquidation_increment")->Get(&inventory_liquidation_increment)) and params().GetParam("max_inventory")->Get(&max_inventory)){
         cout << "Error in getting parameters" << endl;
         return;
     }
