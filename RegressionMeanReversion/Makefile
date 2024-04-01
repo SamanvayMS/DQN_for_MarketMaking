@@ -20,7 +20,7 @@ STRATEGY_NAME=RegressionMeanReversion# should be your cpp file name, single word
 START_DATE=2023-11-30# start of the earliest date
 END_DATE=2023-11-30# end of the latest date
 SYMBOLS=XNAS.ITCH-AAPL
-PARAMETERS=absolute_stop=0.2|strategy_active=true|debug_=false|max_inventory=100|window_size=30|previous_prediction=0|inventory_liquidation_increment=10|inventory_liquidation_interval=10|bar_interval=1
+PARAMETERS=absolute_stop=0.2|strategy_active=true|debug=false|max_inventory=100|window_size=30|previous_prediction=0|inventory_liquidation_increment=10|inventory_liquidation_interval=10|bar_interval=1
 ACCOUNTSIZE=1000000
 
 WORKINGDIR=/home/vagrant/ss/sdk/RCM/StrategyStudio/examples/strategies/DQN_for_MarketMaking
