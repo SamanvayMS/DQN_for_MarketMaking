@@ -9,6 +9,7 @@ CRA_path="/home/vagrant/ss/bt/backtesting-results/"
 # runs the backtest and gets the last cra file name
 last_cra_file_name=$("$workingDir"/provision_scripts/run_backtest.sh "$instanceName" "$startDate" "$endDate" | grep '\.cra' | tail -n1 | awk '{print $NF}')
 
+sleep 10
 # check if the last cra file is equal to ""
 if [ -z "$last_cra_file_name" ]; then
     echo "The last .cra file mentioned is empty"
