@@ -15,12 +15,12 @@ INCLUDEPATH=../../../../includes
 
 INCLUDES=-I/usr/include -I$(INCLUDEPATH) -I$(INCLUDEPATH)/ 
 LDFLAGS=$(LIBPATH)/libstrategystudio_analytics.a $(LIBPATH)/libstrategystudio.a $(LIBPATH)/libstrategystudio_transport.a $(LIBPATH)/libstrategystudio_marketmodels.a $(LIBPATH)/libstrategystudio_utilities.a $(LIBPATH)/libstrategystudio_flashprotocol.a
-INSTANCE_NAME=RegressionMeanReversion# single word, no special characters
-STRATEGY_NAME=RegressionMeanReversion# should be your cpp file name, single word, no special characters
+INSTANCE_NAME=Test# single word, no special characters
+STRATEGY_NAME=Test# should be your cpp file name, single word, no special characters
 START_DATE=2023-11-30# start of the earliest date
 END_DATE=2023-11-30# end of the latest date
 SYMBOLS=XNAS.ITCH-AAPL
-PARAMETERS=absolute_stop=0.2|strategy_active=true|debug_=false|max_inventory=100|window_size=30|previous_prediction=0|inventory_liquidation_increment=10|inventory_liquidation_interval=10|bar_interval=1
+PARAMETERS=name=Test|working=working
 ACCOUNTSIZE=1000000
 
 WORKINGDIR=/home/vagrant/ss/sdk/RCM/StrategyStudio/examples/strategies/DQN_for_MarketMaking

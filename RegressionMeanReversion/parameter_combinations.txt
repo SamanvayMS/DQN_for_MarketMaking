@@ -1,7 +1,0 @@
-absolute_stop=0.2
-debug_=false
-max_inventory=100
-window_size=30
-inventory_liquidation_increment=10
-inventory_liquidation_interval=10
-bar_interval=1

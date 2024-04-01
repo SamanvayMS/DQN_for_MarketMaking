@@ -1,4 +1,0 @@
-# below split type can be either stock or time
-ACCOUNTSIZE=10000000
-TRAIN_STOCKS=AAPL
-TEST_STOCKS=MSFT

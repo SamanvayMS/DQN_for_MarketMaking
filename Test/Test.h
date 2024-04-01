@@ -3,8 +3,8 @@
 
 // These are include guards that prevent redefinition of class names, macro constants, and typedef names. 
 // Include guards help avoiding name conflicts in large software projects.
-#ifndef _STRATEGY_STUDIO_LIB_EXAMPLES_SIMPLE_MOMENTUM_STRATEGY_H_
-#define _STRATEGY_STUDIO_LIB_EXAMPLES_SIMPLE_MOMENTUM_STRATEGY_H_
+#ifndef TEST_H
+#define TEST_H
 
 // This is a conditional preprocessor directive that defines a macro _STRATEGY_EXPORTS as __declspec(dllexport) on Windows platform, and empty on other platforms.
 // This macro is used to export the HelloworldStrategy class to the dynamic link library (DLL) that is loaded by the trading engine.
@@ -39,92 +39,23 @@
 #include <iostream>
 #include <algorithm> 
 #include <cmath>
+#include <memory>
+#include <vector>
+// Class declaration
 
 // Import namespace RCM::StrategyStudio to avoid explicit namespace qualification when using names from this namespace
 using namespace RCM::StrategyStudio;
 using namespace RCM::StrategyStudio::Utilities;
 using namespace std;
 
-struct RegressionResult {
-    double slope;
-    double prediction;
-};
-class Regression {
-public:
-    explicit Regression(int window_size) : window(window_size) {}
-
-    void Reset()
-    {
-        window.clear();
-    }
-
-    RegressionResult Update(double val)
-    {
-        window.push_back(val);
-        return CalculatePredictedValue();
-    }
-
-    RegressionResult CalculatePredictedValue()
-    {
-        RegressionResult result;
-        if (window.size() <= 1) {
-            result.slope = 0; // or some other appropriate default value
-            result.prediction = 0;
-            return result;
-        } // handle insufficient data
-
-        double sum_x = 0;
-        double sum_y = 0;
-        double sum_xy = 0;
-        double sum_xx = 0;
-        int n = window.size();
-
-        int i = 0;
-        for (auto it = window.begin(); it != window.end(); ++it, ++i) {
-            double value = *it;
-            sum_x += i;
-            sum_y += value;
-            sum_xy += (i * value);
-            sum_xx += (i * i);
-        }
-
-        double mean_x = sum_x / n;
-        double mean_y = sum_y / n;
-
-        double ss_xx = sum_xx - n * mean_x * mean_x;
-        double ss_xy = sum_xy - n * mean_x * mean_y;
-
-        double slope = ss_xy / ss_xx;
-        double intercept = mean_y - slope * mean_x;
-
-        result.slope = ss_xy / ss_xx;
-        result.prediction = result.slope * (n+1) + intercept;
-
-        return result;
-    }
-
-    bool FullyInitialized() const { return window.full(); }
-
-private:
-    Analytics::ScalarRollingWindow<double> window;
-};
-
-
-// Class declaration
-class RegressionMeanReversion : public Strategy {
+class Test : public Strategy {
 
 public:
-    typedef boost::unordered_map<const Instrument*, Regression> RegMap;
-    // creates an unordered map where keys are instrument names and values are corresponding classes 
-    // all these pairs are set to a map called MomentumMap
-    typedef RegMap::iterator RegMapIterator; 
-    // we define an iterator that iterates through these key value pairs
-
     // Constructor & Destructor functions for this class
-    RegressionMeanReversion(StrategyID strategyID,
+    Test(StrategyID strategyID,
         const std::string& strategyName,
         const std::string& groupName);
-    ~RegressionMeanReversion();
+    ~Test();
 
 public:
 
@@ -184,40 +115,11 @@ private:
     virtual void DefineStrategyCommands();
 
     void OnMarketState(const MarketStateEventMsg& msg);
-
-    void SendOrder(const Instrument* instrument, int side);
-
-    void InventoryLiquidation();
-
-    void SetInventoryParams();
-
-    double CalculateMidPrice(const Instrument* instrument);
-
-    void RecordAccountStats(const Instrument* instrument);
-
-    void AdjustPortfolio();
-
-    int MaxPossibleLots(const Instrument* instrument,int side);
-
-    void TerminateStrategy();
-
-    void LiquidationOrder(const Instrument* instrument);
-
-    void AbsoluteStopCheck(const Instrument* instrument);
     
 private:
     // Used to store the state and data of the strategy.
-    bool debug_; // a boolean variable that can be used to enable or disable debug mode.
-    int max_inventory_; // max position value we can accumulate in any direction.
-    int window_size_; // number of bars to use for regression
-    double previous_prediction_; // previous predicted value
-    int inventory_liquidation_increment_; // % decrease in inventory
-    int inventory_liquidation_interval_; // time interval between inventory liquidation
-    int bar_interval_; // bar interval
-    boost::unordered_map<const Instrument*, Regression> reg_map_;
-    bool strategy_active_;
-    double absolute_stop_;
-
+    string name;
+    string working;
 };
 
 // extern "C" is used to tell the compiler that these functions have C-style linkage instead of C++-style linkage, which means the function names will not be mangled.
@@ -225,7 +127,7 @@ private:
 extern "C" {
 
     _STRATEGY_EXPORTS const char* GetType() {
-        return "RegressionMeanReversion";
+        return "Test";
     }
 
     _STRATEGY_EXPORTS IStrategy* CreateStrategy(const char* strategyType,
@@ -233,7 +135,7 @@ extern "C" {
                                    const char* strategyName,
                                    const char* groupName) {
         if (strcmp(strategyType, GetType()) == 0) {
-            return *(new RegressionMeanReversion(strategyID, strategyName, groupName));
+            return *(new Test(strategyID, strategyName, groupName));
         } else {
             return NULL;
         }

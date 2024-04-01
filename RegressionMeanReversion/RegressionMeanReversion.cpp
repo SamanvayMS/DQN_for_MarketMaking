@@ -18,21 +18,29 @@ RegressionMeanReversion::RegressionMeanReversion(StrategyID strategyID,
                     const string& groupName):
     Strategy(strategyID, strategyName, groupName),
     reg_map_(),
-    absolute_stop(0.2),
-    strategy_active(true),
+    absolute_stop_(0.2),
+    strategy_active_(true),
     debug_(true),
-    max_inventory(100),
-    window_size(30),
-    previous_prediction(0),
-    inventory_liquidation_increment(10),
-    inventory_liquidation_interval(10),
-    bar_interval(1){
+    max_inventory_(100),
+    window_size_(30),
+    previous_prediction_(0),
+    inventory_liquidation_increment_(10),
+    inventory_liquidation_interval_(10),
+    bar_interval_(1){
     }
 // Destructor for class
 RegressionMeanReversion::~RegressionMeanReversion(){
 }
 
 void RegressionMeanReversion::DefineStrategyParams(){
+    params().CreateParam(CreateStrategyParamArgs("debug", STRATEGY_PARAM_TYPE_STARTUP, VALUE_TYPE_BOOL, debug_));
+    params().CreateParam(CreateStrategyParamArgs("max_inventory", STRATEGY_PARAM_TYPE_STARTUP, VALUE_TYPE_INT, max_inventory_));
+    params().CreateParam(CreateStrategyParamArgs("window_size", STRATEGY_PARAM_TYPE_STARTUP, VALUE_TYPE_INT, window_size_));
+    params().CreateParam(CreateStrategyParamArgs("absolute_stop", STRATEGY_PARAM_TYPE_STARTUP, VALUE_TYPE_DOUBLE, absolute_stop_));
+    params().CreateParam(CreateStrategyParamArgs("inventory_liquidation_increment", STRATEGY_PARAM_TYPE_STARTUP, VALUE_TYPE_INT, inventory_liquidation_increment_));
+    params().CreateParam(CreateStrategyParamArgs("inventory_liquidation_interval", STRATEGY_PARAM_TYPE_STARTUP, VALUE_TYPE_INT, inventory_liquidation_interval_));
+    params().CreateParam(CreateStrategyParamArgs("bar_interval", STRATEGY_PARAM_TYPE_STARTUP, VALUE_TYPE_INT, bar_interval_));
+    params().CreateParam(CreateStrategyParamArgs("strategy_active", STRATEGY_PARAM_TYPE_STARTUP, VALUE_TYPE_BOOL, strategy_active_));
 }
 
 void RegressionMeanReversion::DefineStrategyCommands(){
@@ -40,9 +48,17 @@ void RegressionMeanReversion::DefineStrategyCommands(){
 
 // By default, SS will register to trades/quotes/depth data for the instruments you have requested via command_line.
 void RegressionMeanReversion::RegisterForStrategyEvents(StrategyEventRegister* eventRegister, DateType currDate)
-{    
-    ReadParameters();
+{   
     SetInventoryParams();
+    int bar_interval;
+    int inventory_liquidation_interval;
+    int inventory_liquidation_increment;
+
+    if (!(params().GetParam("bar_interval")->Get(&bar_interval) and params().GetParam("inventory_liquidation_interval")->Get(&inventory_liquidation_interval) and params().GetParam("inventory_liquidation_increment")->Get(&inventory_liquidation_increment))){
+        cout << "Error in getting parameters" << endl;
+        return;
+    }
+
     for (SymbolSetConstIter it = symbols_begin(); it != symbols_end(); ++it) {
         eventRegister->RegisterForBars(*it, BAR_TYPE_TIME, bar_interval);
     }
@@ -70,6 +86,14 @@ void RegressionMeanReversion::OnOrderUpdate(const OrderUpdateEventMsg& msg) {
 
 void RegressionMeanReversion::OnBar(const BarEventMsg& msg){ 
 
+    bool strategy_active;
+    double window_size;
+    double previous_prediction;
+    if (!(params().GetParam("strategy_active")->Get(&strategy_active) and params().GetParam("window_size")->Get(&window_size) and params().GetParam("previous_prediction")->Get(&previous_prediction))){
+        cout << "Error in getting parameters" << endl;
+        return;
+    }
+
     AbsoluteStopCheck(&msg.instrument());
     RegMapIterator reg_iter = reg_map_.find(&msg.instrument());
     if (reg_iter == reg_map_.end()) {
@@ -92,7 +116,7 @@ void RegressionMeanReversion::OnBar(const BarEventMsg& msg){
             if (debug_)
                 cout << "No trade" << endl;
         }
-        previous_prediction = prediction;
+        params().GetParam("previous_prediction")->SetValue(prediction);
     }
 }
 
@@ -100,6 +124,13 @@ void RegressionMeanReversion::OnQuote(const QuoteEventMsg& msg){
 }
 
 void RegressionMeanReversion::InventoryLiquidation(){
+    int inventory_liquidation_increment;
+    int max_inventory;
+    if (!(params().GetParam("inventory_liquidation_increment")->Get(&inventory_liquidation_increment)) and params().GetParam("max_inventory")->Get(&max_inventory)){
+        cout << "Error in getting parameters" << endl;
+        return;
+    }
+
     max_inventory -= inventory_liquidation_increment;
     if (max_inventory < 0)
         max_inventory = 0;
@@ -111,55 +142,17 @@ void RegressionMeanReversion::InventoryLiquidation(){
 }
 
 void RegressionMeanReversion::SetInventoryParams(){
+    int inventory_liquidation_increment;
+    int max_inventory;
+    if (!(params().GetParam("inventory_liquidation_increment")->Get(&inventory_liquidation_increment)) and params().GetParam("max_inventory")->Get(&max_inventory)){
+        cout << "Error in getting parameters" << endl;
+        return;
+    }
+
     inventory_liquidation_increment = int(max_inventory/inventory_liquidation_increment)+1;
+    params().GetParam("inventory_liquidation_increment")->SetValue(inventory_liquidation_increment);
     if (debug_)
         cout << "liquidation increment :- " << inventory_liquidation_increment << endl;
-}
-
-void RegressionMeanReversion::ReadParameters(){
-    string line;
-    ifstream myfile("/home/vagrant/ss/sdk/RCM/StrategyStudio/examples/strategies/group_01_project/RegressionMeanReversion/parameters.txt"); 
-    if (myfile.is_open()) {
-        while ( getline (myfile, line) ) {
-            string key;
-            string value;
-            istringstream iss(line);
-            getline(iss, key, '='); // Extract string up to the '=' character
-            getline(iss, value);
-            SetParamFromKey(key,value);
-        }
-        myfile.close();
-    } else {
-        cout << "Unable to open file to read parameters from file" << endl;
-    }
-}
-
-void RegressionMeanReversion::SetParamFromKey(string key, string value){
-
-    if (key == "debug_"){
-        debug_ = (value == "true" || value == "1");
-    }
-    else if (key == "max_inventory"){
-        max_inventory = stoi(value);
-    }
-    else if (key == "window_size"){
-        window_size = stoi(value);
-    }
-    else if (key == "previous_prediction"){
-        previous_prediction = stod(value); // Assuming it's a double
-    }
-    else if (key == "inventory_liquidation_increment"){
-        inventory_liquidation_increment = stoi(value);
-    }
-    else if (key == "inventory_liquidation_interval"){
-        inventory_liquidation_interval = stoi(value);
-    }
-    else if (key == "bar_interval"){
-        bar_interval = stoi(value);
-    }
-    else if (key == "absolute_stop") {
-        absolute_stop = stod(value);
-    }
 }
 
 double RegressionMeanReversion::CalculateMidPrice(const Instrument* instrument) {
@@ -183,6 +176,11 @@ void RegressionMeanReversion::AdjustPortfolio() {
 int RegressionMeanReversion::MaxPossibleLots(const Instrument* instrument,int side){
     int current_position = portfolio().position(instrument);
     int max_order_size = 0;
+    int max_inventory;
+    if (!params().GetParam("max_inventory")->Get(&max_inventory)){
+        cout << "Error in getting parameters" << endl;
+        return 0;
+    }
     if (side == 1) {
         max_order_size = max_inventory - current_position;
     } else {
@@ -241,7 +239,7 @@ void RegressionMeanReversion::TerminateStrategy() {
         const Instrument* instrument = it->second;
         LiquidationOrder(instrument);
     }
-    strategy_active = false;
+    params().GetParam("strategy_active")->SetValue(false);
 }
 
 void RegressionMeanReversion::LiquidationOrder(const Instrument* instrument){
@@ -275,13 +273,21 @@ void RegressionMeanReversion::OnResetStrategyState() {
 }
 
 void RegressionMeanReversion::OnParamChanged(StrategyParam& param) {
+    if (param.param_name() == "strategy_active" && param.Equals(false)){
+        TerminateStrategy();
+    }
 }
 
 void RegressionMeanReversion::AbsoluteStopCheck(const Instrument* instrument){
     double pnl = portfolio().total_pnl(instrument)/portfolio().initial_cash();
+    double absolute_stop;
+    if (!params().GetParam("absolute_stop")->Get(&absolute_stop)){
+        cout << "Error in getting parameters" << endl;
+        return;
+    }
     if (pnl < -absolute_stop){
         LiquidationOrder(instrument);
         trade_actions()->SendCancelAll();
-        strategy_active = false;
+        params().GetParam("strategy_active")->SetValue(false);
     }
 }
