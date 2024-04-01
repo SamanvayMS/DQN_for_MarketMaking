@@ -6,7 +6,7 @@ outputDirectory="$5"
 fullReports="$6"
 
 # runs the backtest and gets the last cra file name
-last_cra_file_name=$("$workingDir"/run_backtest.sh "$instanceName" "$startDate" "$endDate" | grep '\.cra' | tail -n1 | awk '{print $NF}')
+last_cra_file_name=$("$workingDir"/provision_scripts/run_backtest.sh "$instanceName" "$startDate" "$endDate" | grep '\.cra' | tail -n1 | awk '{print $NF}')
 
 # check if the last cra file is equal to ""
 if [ -z "$last_cra_file_name" ]; then
