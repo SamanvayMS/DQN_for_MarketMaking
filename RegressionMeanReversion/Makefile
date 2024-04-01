@@ -24,7 +24,7 @@ PARAMETERS=absolute_stop=0.2|strategy_active=true|debug=false|max_inventory=100|
 ACCOUNTSIZE=1000000
 
 WORKINGDIR=/home/vagrant/ss/sdk/RCM/StrategyStudio/examples/strategies/DQN_for_MarketMaking
-OUTPUT_DIR=/csv_files
+OUTPUT_DIR=$(WORKINGDIR)/${STRATEGY_NAME}/results
 FULL_REPORTS=True
 
 # Define the names of the library, source, and header files.
